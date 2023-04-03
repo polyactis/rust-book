@@ -1,3 +1,14 @@
+use std::io;
+
+
+fn another_function(x: i32) {
+    println!("The value of x is: {x}");
+}
+
+fn five() -> i32 {
+    5
+}
+
 fn main() {
     let mut x = 5;
     println!("The value of x is: {x}");
@@ -17,11 +28,173 @@ fn main() {
     let spaces = spaces.len();
     println!("The value of spaces is: {spaces}.");
     
-    let guess: u32 = "42".parse().expect("Not a number!");
-    println!("The guess is: {guess}.");
+    //let guess: u32 = "42".parse().expect("Not a number!");
+    let guess = 98_222u32;
+    let guess_b = 0b1111_0000;
+    let guess_hex = 0o77;
+    println!("The guess is: {guess}. guess_b is {guess_b}. guess_hex is {guess_hex}.");
 
 
     const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
     println!("The value of THREE_HOURS_IN_SECONDS is: {THREE_HOURS_IN_SECONDS}");
+
+    // addition
+    //let sum = 5 + 10;
+
+    // subtraction
+    //let difference = 95.5 - 4.3;
+
+    // multiplication
+    //let product = 4 * 30;
+
+    // division
+    let quotient = 56.7 / 32.2;
+    println!("quotient is {quotient}.");
+
+    let truncated = -5 / 3; // Results in -1
+    println!("truncated is {truncated}.");
+
+    // remainder
+    let remainder = 43 % 5;
+    println!("remainder is {remainder}.");
+    
+    //let c = 'z';
+    let z: char = 'ℤ'; // with explicit type annotation
+    println!("z is {z}.");
+    let heart_eyed_cat = '😻';
+    println!("heart_eyed_cat is {heart_eyed_cat}.");
+
+    let tup: (i32, f64, u8) = (500, 6.4, 1);
+    println!("tup is: {:?}", tup);
+    println!("tup is: {:#?}", tup);
+    let five_hundred = tup.0;
+    let one = tup.2;
+    println!("five_hundred and one are: {}, {:#?}", five_hundred, one);
+
+    //let (x, y, z) = tup;
+    //println!("The value of y is: {y}");
+
+    let tup = ();
+    println!("empty tup is {:?}.", tup);
+    println!("empty tup is {:#?}.", tup);
+
+    let a = [1, 2, 3, 4, 5];
+    //let a = [3; 5];
+    println!("array a is {:?}.", a);
+    
+    println!("Please enter an array index.");
+
+    let mut index = String::new();
+
+    io::stdin()
+        .read_line(&mut index)
+        .expect("Failed to read line");
+
+    let index: usize = index
+        .trim()
+        .parse()
+        .expect("Index entered was not a number");
+
+    let element = a[index];
+
+    println!("The value of the element at index {index} is: {element}");
+
+    let months = ["January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"];
+    println!("Months are {:?}.", months);
+    
     println!("Hello, world!");
+
+    another_function(element);
+    print_labeled_measurement(element, heart_eyed_cat);
+
+    let x = five();
+    let x = plus_one(x);
+
+    println!("The value of x is: {x}");
+
+    let condition = true;
+    let number = if condition { 5 } else { 6 };
+
+    println!("The value of number is: {number}");
+
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+
+    println!("The counter result is {result}");
+
+    let mut count = 0;
+    'counting_up: loop {
+        println!("count = {count}");
+        let mut remaining = 10;
+
+        loop {
+            println!("remaining = {remaining}");
+            if remaining == 9 {
+                break;
+            }
+            if count == 2 {
+                break 'counting_up;
+            }
+            remaining -= 1;
+        }
+
+        count += 1;
+    }
+    println!("End count = {count}");
+
+    let mut number = 3;
+
+    while number != 0 {
+        println!("{number}!");
+
+        number -= 1;
+    }
+
+    println!("LIFTOFF!!!");
+
+    let a = [10, 20, 30, 40, 50];
+
+    for element in a {
+        println!("the value is: {element}");
+    }
+
+    for number in (1..4).rev() {
+        println!("{number}!");
+    }
+    println!("LIFTOFF!!!");
+
+    let s = String::from("hello world");
+
+    let word = first_word(&s);
+
+    println!("the first word is: {}", word);
+
+}
+
+fn print_labeled_measurement(value: i32, unit_label: char) {
+    println!("The measurement is: {value}{unit_label}");
+}
+
+fn plus_one(x: i32) -> i32 {
+    x + 1
+}
+
+fn first_word(s: &String) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
 }
