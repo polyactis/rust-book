@@ -14,7 +14,8 @@ enum Coin {
     Quarter(UsState),
 }
 
-fn value_in_cents(coin: Coin) -> u8 {
+fn value_in_cents(coin: &Coin) -> u8 {
+    // &Coin instead of Coin because it does not need to be mutated.
     match coin {
         Coin::Penny => {
             println!("Lucky penny!");
@@ -40,22 +41,23 @@ fn main() {
         _ => (),
     }
 
-    let five = Some(5);
+    let five = Option::Some(5);
     let six = plus_one(five);
     let none = plus_one(None);
     println!("{:?}, {:?}, {:?}", five, six, none);
 
     let quarter_coin = Coin::Quarter(UsState::Alaska);
-    let quarter_value  = value_in_cents(quarter_coin);
+    let quarter_value  = value_in_cents(&quarter_coin);
     println!("quarter_value is {:?}!", quarter_value);
     
     let config_max = Some(3u8);
     if let Some(max) = config_max {
-        println!("The maximum is configured to be {}", max);
+        println!("The maximum is configured to be {max}!");
     }
 
     let mut count = 0;
-    if let Coin::Quarter(state) = quarter_coin {
+    if let Coin::Quarter(state) = &quarter_coin {
+        //&quarter_coin and quarter_coin are both OK but the latter will move the variable's ownership.
         println!("State quarter from {:?}!", state);
     } else {
         count += 1;
@@ -66,6 +68,8 @@ fn main() {
     let some_char = Some('e');
 
     let absent_number: Option<i32> = None;
+    println!("{:?}, {:?}, {:?}", some_number, some_char, absent_number);
+
     
 }
 
