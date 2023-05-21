@@ -51,12 +51,12 @@ fn main() {
     let number_list = vec![34, 50, 25, 100, 65];
 
     let result = largest(&number_list);
-    println!("The largest number is {}", result);
+    println!("The largest number in {:?} is {}", number_list, result);
 
     let char_list = vec!['y', 'm', 'a', 'q'];
 
     let result = largest(&char_list);
-    println!("The largest char is {}", result);
+    println!("The largest char in {:?} is {}", char_list, result);
 
     let both_integer = Point { x: 5, y: 10 };
     let both_float = Point { x: 1.0, y: 4.0 };
