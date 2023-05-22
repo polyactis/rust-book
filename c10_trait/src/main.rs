@@ -1,4 +1,16 @@
-use c10_trait::{Summary, Tweet};
+use c10_trait::{Summary, Tweet, NewsArticle, notify};
+use c10_trait::pair;
+
+fn returns_summarizable() -> impl Summary {
+    Tweet {
+        username: String::from("Donald Trump"),
+        content: String::from(
+            "MAGA: Make America Great Again",
+        ),
+        reply: false,
+        retweet: false,
+    }
+}
 
 fn main() {
     let tweet = Tweet {
@@ -11,4 +23,25 @@ fn main() {
     };
 
     println!("1 new tweet: {}", tweet.summarize());
+    notify(&tweet);
+
+    let article = NewsArticle {
+        headline: String::from("Penguins win the Stanley Cup Championship!"),
+        location: String::from("Pittsburgh, PA, USA"),
+        author: String::from("Iceburgh"),
+        content: String::from(
+            "The Pittsburgh Penguins once again are the best \
+             hockey team in the NHL.",
+        ),
+    };
+
+    println!("New article available! {}", article.summarize());
+
+    println!("{}", returns_summarizable().summarize());
+
+    let pair_obj = pair::Pair::new(5, 12);
+    pair_obj.cmp_display();
+    println!("pair ojbect is {}.", pair_obj);
+    println!("pair ojbect is {}.", pair_obj.to_string());
+
 }
