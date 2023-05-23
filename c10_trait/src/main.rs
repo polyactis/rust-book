@@ -5,10 +5,29 @@ fn returns_summarizable() -> impl Summary {
     Tweet {
         username: String::from("Donald Trump"),
         content: String::from(
-            "MAGA: Make America Great Again",
+            "MAGA Make America Great Again",
         ),
         reply: false,
         retweet: false,
+    }
+}
+
+
+use std::fmt::Display;
+
+fn longest_with_an_announcement<'a, T>(
+    x: &'a str,
+    y: &'a str,
+    ann: T,
+) -> &'a str
+where
+    T: Display,
+{
+    println!("Announcement! {}", ann);
+    if x.len() > y.len() {
+        x
+    } else {
+        y
     }
 }
 
@@ -34,8 +53,8 @@ fn main() {
              hockey team in the NHL.",
         ),
     };
-
     println!("New article available! {}", article.summarize());
+    println!("{}", article.content);
 
     println!("{}", returns_summarizable().summarize());
 
@@ -43,5 +62,8 @@ fn main() {
     pair_obj.cmp_display();
     println!("pair ojbect is {}.", pair_obj);
     println!("pair ojbect is {}.", pair_obj.to_string());
+
+
+    println!("{}", longest_with_an_announcement("ABCDEF", "ABCD", article));
 
 }

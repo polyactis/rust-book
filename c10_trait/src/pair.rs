@@ -28,8 +28,12 @@ impl<T: Display + PartialOrd> Pair<T> {
 //     }
 // }
 
-// Between ToString and Display, only one of the traits should be implemented for a struct. 
-//  Because implementing Display would automatically implement ToString.
+/*
+Between ToString and Display, only one of them should be implemented 
+    for a struct because implementing Display would automatically 
+    implement ToString.
+*/
+
 // Implement Display for the structs and for MyTrait
 impl<T: Display> fmt::Display for Pair<T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

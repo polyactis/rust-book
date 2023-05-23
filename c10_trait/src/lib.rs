@@ -1,3 +1,5 @@
+use std::fmt;
+
 pub mod pair;
 
 pub trait Summary {
@@ -6,6 +8,8 @@ pub trait Summary {
     fn summarize(&self) -> String {
         format!("(Read more from {}...)", self.summarize_author())
     }
+
+
 }
 
 pub fn notify(item: &impl Summary) {
@@ -28,7 +32,22 @@ impl Summary for NewsArticle {
 //     fn summarize(&self) -> String {
 //         format!("{}, by {} ({})", self.headline, self.author, self.location)
 //     }
+
 }
+
+impl fmt::Display for NewsArticle{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.summarize())
+    }
+}
+
+/* Below (Implementing Display for all Summary trait objects) does not work.
+impl<T: Summary> fmt::Display for T{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.summarize())
+    }
+}
+*/
 
 pub struct Tweet {
     pub username: String,
@@ -44,5 +63,11 @@ impl Summary for Tweet {
 
     fn summarize(&self) -> String {
         format!("{}: {}", self.username, self.content)
+    }
+}
+
+impl fmt::Display for Tweet{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.summarize())
     }
 }
