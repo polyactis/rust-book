@@ -1,5 +1,5 @@
 [package]
-name = "c10_trait"
+name = "c10_trait_lifetime"
 version = "0.1.0"
 edition = "2021"
 
