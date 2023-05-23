@@ -1,5 +1,5 @@
-use c10_trait::{Summary, Tweet, NewsArticle, notify};
-use c10_trait::pair;
+use c10_trait_lifetime::{Summary, Tweet, NewsArticle, notify};
+use c10_trait_lifetime::pair;
 
 fn returns_summarizable() -> impl Summary {
     Tweet {
