@@ -31,6 +31,21 @@ fn value_in_cents(coin: &Coin) -> u8 {
     }
 }
 
+
+fn add_fancy_hat() {
+    println!("Added a fancy hat!");
+}
+fn remove_fancy_hat() {
+    println!("Removed a fancy hat!")
+}
+
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i + 1),
+    }
+}
+
 fn main() {
     println!("Hello, world!");
 
@@ -47,8 +62,11 @@ fn main() {
     println!("{:?}, {:?}, {:?}", five, six, none);
 
     let quarter_coin = Coin::Quarter(UsState::Alaska);
+
     let quarter_value  = value_in_cents(&quarter_coin);
     println!("quarter_value is {:?}!", quarter_value);
+    let quarter_alabama = Coin::Quarter(UsState::Alabama);
+    println!("quarter_value is {:?}!", value_in_cents(&quarter_alabama));
     
     let config_max = Some(3u8);
     if let Some(max) = config_max {
@@ -75,17 +93,3 @@ fn main() {
 
 
 
-
-fn add_fancy_hat() {
-    println!("Added a fancy hat!");
-}
-fn remove_fancy_hat() {
-    println!("Removed a fancy hat!")
-}
-
-fn plus_one(x: Option<i32>) -> Option<i32> {
-    match x {
-        None => None,
-        Some(i) => Some(i + 1),
-    }
-}
