@@ -67,6 +67,7 @@ mod tests {
     #[test]
     #[should_panic(expected = "less than or equal to 100")]
     fn greater_than_100() {
+        println!("insert 200 into Guess.");
         Guess::new(200);
     }
 
@@ -99,6 +100,7 @@ mod tests {
         }
     }
     #[test]
+    #[ignore]
     fn two_plus_two_one_line() {
         assert_eq!(2 + 2, 4);
     }
