@@ -1,3 +1,6 @@
+use std::thread;
+use std::time::Duration;
+
 #[derive(Debug, PartialEq, Copy, Clone)]
 enum ShirtColor {
     Red,
@@ -49,4 +52,24 @@ fn main() {
         "The user with preference {:?} gets {:?}",
         user_pref2, giveaway2
     );
+
+    let expensive_closure = |num: u32| -> u32 {
+        eprint!("calculating slowly...");
+        thread::sleep(Duration::from_secs(2));
+        eprintln!("{:?}", num);
+        num};
+    
+    expensive_closure(2);
+
+    let mut list = vec![1, 2, 3];
+    println!("Before defining closure: {:?}", list);
+    let mut borrows_mutably = || list.push(7);
+    borrows_mutably();
+    println!("After calling closure: {:?}", list);
+
+    thread::spawn(
+        move || println!("From thread: {:?}", list))
+        .join().unwrap();
+
+
 }
