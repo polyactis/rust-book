@@ -66,7 +66,8 @@ fn main() {
     println!("Got: {}", received);
     println!("Got: {}", rx.recv().unwrap());
     //println!("Got: {}", rx.recv().unwrap());    //unwrap() will fail due to an empty result.
-
+    
+    println!("Printing all received via an iterator...");
 
     for received in rx {
         println!("Got: {}", received);
