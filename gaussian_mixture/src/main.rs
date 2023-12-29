@@ -1,3 +1,4 @@
+//use core::num;
 use rand::Rng;
 use nalgebra::{DVector, DMatrix};
 
@@ -18,45 +19,59 @@ fn main() {
         // Maximization step
         maximization_step(&data, &responsibilities, &mut weights, &mut means, &mut covariances);
     }
+    // calculate the responsibilities one last time
+    let responsibilities = expectation_step(&data, &weights, &means, &covariances);
 
     // Print the final parameters
     println!("Final weights: {:?}", weights);
     println!("Final means: {:?}", means);
     println!("Final covariances: {:?}", covariances);
+    for i in 0..10{
+        println!("Data: {:?}, responsibilities: {:?}.", data.row(i).to_scalar(), responsibilities.row(i).to_string());
+    
+    }
+
 }
 
 fn generate_data() -> DVector<f64> {
     let mut rng = rand::thread_rng();
     let num_samples = 1000;
-    let data: DVector<f64> = (0..num_samples)
+    let data: DVector<f64> = DVector::from_iterator(num_samples, 
+        (0..num_samples)
         .map(|_| rng.gen_range(-5.0..5.0))
-        .collect();
+    );
+    //.collect()
     data
 }
 
-fn initialize_parameters(data: &DVector<f64>, num_components: usize) -> (DVector<f64>, DVector<f64>, DVector<f64>) {
+fn initialize_parameters(data: &DVector<f64>, num_components: usize) -> 
+    (DVector<f64>, DVector<f64>, DVector<f64>) {
+    
     let mut rng = rand::thread_rng();
-
     // Initialize weights uniformly
-    let weights = DVector::from_element(num_components, 1.0 / num_components as f64);
+    let weights = DVector::from_element(num_components,
+        1.0 / num_components as f64);
 
     // Randomly initialize means and covariances based on data statistics
     let mean_min = data.min();
     let mean_max = data.max();
-    let means: DVector<f64> = (0..num_components)
+    let means: DVector<f64> = DVector::from_iterator(num_components, 
+        (0..num_components)
         .map(|_| rng.gen_range(mean_min..mean_max))
-        .collect();
+    );
 
     let covariance_min = 0.1;
     let covariance_max = 1.0;
-    let covariances: DVector<f64> = (0..num_components)
+    let covariances: DVector<f64> = DVector::from_iterator(num_components, 
+        (0..num_components)
         .map(|_| rng.gen_range(covariance_min..covariance_max))
-        .collect();
+    );
 
     (weights, means, covariances)
 }
 
-fn expectation_step(data: &DVector<f64>, weights: &DVector<f64>, means: &DVector<f64>, covariances: &DVector<f64>) -> DMatrix<f64> {
+fn expectation_step(data: &DVector<f64>, weights: &DVector<f64>, 
+    means: &DVector<f64>, covariances: &DVector<f64>) -> DMatrix<f64> {
     let num_samples = data.len();
     let num_components = weights.len();
 
@@ -66,14 +81,17 @@ fn expectation_step(data: &DVector<f64>, weights: &DVector<f64>, means: &DVector
         for j in 0..num_components {
             responsibilities[(i, j)] = weights[j]
                 * gaussian_pdf(data[i], means[j], covariances[j])
-                / (0..num_components).map(|k| weights[k] * gaussian_pdf(data[i], means[k], covariances[k])).sum::<f64>();
+                / (0..num_components).map(|k| weights[k]
+                    * gaussian_pdf(data[i], means[k], covariances[k])).sum::<f64>();
         }
     }
 
     responsibilities
 }
 
-fn maximization_step(data: &DVector<f64>, responsibilities: &DMatrix<f64>, weights: &mut DVector<f64>, means: &mut DVector<f64>, covariances: &mut DVector<f64>) {
+fn maximization_step(data: &DVector<f64>, responsibilities: &DMatrix<f64>, 
+    weights: &mut DVector<f64>, means: &mut DVector<f64>, covariances: &mut DVector<f64>) {
+    
     let num_samples = data.len();
     let num_components = weights.len();
 
@@ -89,7 +107,8 @@ fn maximization_step(data: &DVector<f64>, responsibilities: &DMatrix<f64>, weigh
 
     // Update covariances
     for j in 0..num_components {
-        let covariance_sum = responsibilities.column(j).dot(&(data - means[j]).map(|x| x.powi(2))) / responsibilities.column(j).sum();
+        let covariance_sum = responsibilities.column(j).dot(
+            &(data.map(|element| element - means[j])).map(|x| x.powi(2))) / responsibilities.column(j).sum();
         covariances[j] = covariance_sum.max(1e-6); // Ensure covariance is not too small
     }
 }
