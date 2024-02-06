@@ -19,13 +19,14 @@ struct Rectangle {
 
 impl Inventory {
     fn giveaway(&self, user_preference: Option<ShirtColor>) -> ShirtColor {
+        // closure
         user_preference.unwrap_or_else(|| self.most_stocked())
     }
 
     fn most_stocked(&self) -> ShirtColor {
         let mut num_red = 0;
         let mut num_blue = 0;
-
+        // iterators
         for color in &self.shirts {
             match color {
                 ShirtColor::Red => num_red += 1,
@@ -41,6 +42,8 @@ impl Inventory {
 }
 
 fn main() {
+    println!("#1） Give away the most in the inventory if None color selected.");
+
     let store = Inventory {
         shirts: vec![ShirtColor::Blue, ShirtColor::Red, ShirtColor::Blue],
     };
@@ -59,25 +62,30 @@ fn main() {
         user_pref2, giveaway2
     );
 
+    println!("#2） Run an expensive closure (sleeping).");
+
     let expensive_closure = |num: u32| -> u32 {
-        eprint!("calculating slowly...");
-        thread::sleep(Duration::from_secs(2));
+        eprint!("Calculating slowly (sleep {num} seconds)...");
+        thread::sleep(Duration::from_secs(num as u64));
         eprintln!("{:?}", num);
         num};
     
-    expensive_closure(2);
+    let ans = expensive_closure(3);
+    println!("Return from expensive_closure is {ans}");
 
     let mut list = vec![1, 2, 3];
-    println!("Before defining closure: {:?}", list);
+    println!("List before defining & calling closure that modifies the list: {:?}", list);
     let mut borrows_mutably = || list.push(7);
     borrows_mutably();
-    println!("After calling closure: {:?}", list);
+    println!("List after calling closure: {:?}", list);
 
+    println!("#3） Launch a thread to print list.");
     thread::spawn(
         move || println!("From thread: {:?}", list))
         .join()
         .unwrap();
 
+    println!("#4) Sort a list of rectangles by width.");
 
     let mut list = [
         Rectangle { width: 10, height: 1 },
