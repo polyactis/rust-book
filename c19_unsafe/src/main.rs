@@ -86,7 +86,7 @@ fn main() {
     };
     println!("10K elements (fake obtaining. true obtaining results in segmentation fault) are {:?}", values);
 
-    println!("3) Call an unsafe function");
+    println!("3) Call an unsafe-marked function (but can be actually safe )");
     unsafe { 
         dangerous();
     }
