@@ -41,7 +41,7 @@ static HELLO_WORLD: &str = "Hello world!";
 
 // mutable global static variable
 static mut COUNTER: u32 = 0;
-fn add_to_count(inc: u32) {
+fn add_to_counter(inc: u32) {
     // mutable statics can be mutated by multiple threads: aliasing violations or data races will cause undefined behavior
     // so must be within unsafe block.
     unsafe {
@@ -123,7 +123,7 @@ fn main() {
         // so must be within unsafe block.
         println!("Counter is {COUNTER}");
     }
-    add_to_count(3);
+    add_to_counter(3);
     unsafe {
         // mutable statics can be mutated by multiple threads: aliasing violations or data races will cause undefined behavior
         // so must be within unsafe block.
