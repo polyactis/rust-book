@@ -78,13 +78,13 @@ fn main() {
         //println!("r is: {}", *r);
     }
 
-    println!("2) Obtain 10K elements at address {address} results in segmentation fault");
+    println!("2) Obtain 10 elements at random address {address} results in segmentation fault");
     let values= unsafe {
-        // appending ; results in returning unit (empty structure)
-        // removing ; will incur segmentation fault as it tries to access a random address.
-        slice::from_raw_parts_mut(r, 10000);
+        // Last expression without trailing ; incurs segmentation fault as it tries to access a random address.
+        // Appending ; returns empty (unit type) and does not fetch memory (which causes segmentation fault).
+        slice::from_raw_parts_mut(r, 10);
     };
-    println!("10K elements (fake obtaining. true obtaining results in segmentation fault) are {:?}", values);
+    println!("10 elements (fake obtaining. true obtaining results in segmentation fault) are {:?}", values);
 
     println!("3) Call an unsafe-marked function (but can be actually safe )");
     unsafe { 

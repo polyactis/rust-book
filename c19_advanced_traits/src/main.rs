@@ -186,8 +186,8 @@ fn main() {
     takes_long_type(f);
     returns_long_type()();
 
-    println!("6) Never Type. loop/continue/panic! return !
-    // while break returns () (unit type).");
+    println!("6) Never Type: loop/continue/panic! return ! (never type).
+    // break returns () (unit type).");
     let mut c = 0;
     // 
     print!("forever ");
