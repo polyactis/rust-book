@@ -5,7 +5,7 @@ use std::sync::mpsc;
 use std::sync::Mutex;
 
 fn main() {
-
+    println!("1) Create new threads with spawn()");
     let handler1 = thread::spawn(|| {
         for i in 1..10 {
             println!("hi number {} from the spawned thread!", i);
@@ -13,11 +13,13 @@ fn main() {
         }
     });
 
+    println!("3) Use move Closures with Threads. Move v into thread.");
     let v = vec![1, 2, 3];
-
     let handle = thread::spawn(move || {
         println!("Here's a vector: {:?}", v);
     });
+
+    println!("2) Waiting for all threads to finish by join()");
     handle.join().unwrap();
 
     for i in 1..5 {
@@ -26,9 +28,10 @@ fn main() {
     }
 
     handler1.join().unwrap();
+    println!("2.1) Prior threads should finish by now");
 
+    println!("3) Channel/Message passing (multi-producers) to transfer data between threads.");
     let (tx, rx) = mpsc::channel();
-
     let tx1 = tx.clone();
     thread::spawn(move || {
         let val = String::from("t1: hi");
@@ -68,13 +71,13 @@ fn main() {
     //println!("Got: {}", rx.recv().unwrap());    //unwrap() will fail due to an empty result.
     
     println!("Printing all received via an iterator...");
-
     for received in rx {
         println!("Got: {}", received);
     }
 
-
+    println!("4) Use Arc<Mutex<T>> to modify the same data across threads. Similar to RefCell<T>/RC<T> in single-thread.");
     let counter = Arc::new(Mutex::new(0));
+    println!("Counter = {:?}", &counter);
     let mut handles = vec![];
 
     for _ in 0..10 {
@@ -91,7 +94,7 @@ fn main() {
     for handle in handles {
         handle.join().unwrap();
     }
-
+    println!("Counter = {:?}", &counter);
     println!("Final counter result: {}", *counter.lock().unwrap());
 
 }
