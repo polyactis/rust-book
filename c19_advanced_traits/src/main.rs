@@ -124,7 +124,7 @@ impl fmt::Display for Wrapper {
     }
 }
 
-// alias for a lengthy type
+// alias for a lengthy type. Note Fn vs fn.
 type Thunk = Box<dyn Fn() + Send + 'static>;
 
 fn takes_long_type(f: Thunk){
@@ -185,8 +185,14 @@ fn main() {
     let f: Thunk = Box::new(|| println!("aloha"));
     takes_long_type(f);
     returns_long_type()();
+    
+    println!("6) DST (Dynamically Sized Type): why str is always &str.");
+    // str is a DST (dynamically sized type) and must use a pointer-like (&str slice)
+    let s1: &str = "Hellow there!";
+    let s2 = "How's it going?";
+    println!("s1 is {s1}, s2 is {s2}.");
 
-    println!("6) Never Type: loop/continue/panic! return ! (never type).
+    println!("7) Never Type: loop/continue/panic! return ! (never type).
     // break returns () (unit type).");
     let mut c = 0;
     // 
@@ -198,16 +204,11 @@ fn main() {
             break;
         }
     };
-    println!("\n Press Ctrl+C after 3 secs to interrupt the following forever loop.");
+    println!("\n Press Ctrl+C to interrupt the following forever loop.");
     thread::sleep(Duration::from_secs(3));
-
     let b = loop {
         c += 1;
         print!("bever ");
     };
-
-    // str is a DST (dynamically sized type) and must use a pointer-like (&str slice)
-    let s1: &str = "Hellow there!";
-    let s2 = "How's it going?";
 
 }
