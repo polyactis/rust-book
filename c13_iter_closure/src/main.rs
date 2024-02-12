@@ -85,7 +85,7 @@ fn main() {
         .join()
         .unwrap();
 
-    println!("#4) Sort a list of rectangles by width.");
+    println!("#4) Sort a list of rectangles by a FnMut closure (width).");
 
     let mut list = [
         Rectangle { width: 10, height: 1 },
