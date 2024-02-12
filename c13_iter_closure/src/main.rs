@@ -42,7 +42,7 @@ impl Inventory {
 }
 
 fn main() {
-    println!("#1） Give away the most in the inventory if None color selected.");
+    println!("#1) Give away the most in the inventory if None color selected.");
 
     let store = Inventory {
         shirts: vec![ShirtColor::Blue, ShirtColor::Red, ShirtColor::Blue],
@@ -62,7 +62,7 @@ fn main() {
         user_pref2, giveaway2
     );
 
-    println!("#2） Run an expensive closure (sleeping).");
+    println!("#2) Run an expensive closure (sleeping).");
 
     let expensive_closure = |num: u32| -> u32 {
         eprint!("Calculating slowly (sleep {num} seconds)...");
@@ -79,7 +79,7 @@ fn main() {
     borrows_mutably();
     println!("List after calling closure: {:?}", list);
 
-    println!("#3） Launch a thread to print list.");
+    println!("#3) Launch a thread to print list.");
     thread::spawn(
         move || println!("From thread: {:?}", list))
         .join()
