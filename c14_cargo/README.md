@@ -1,8 +1,9 @@
 
 ```shell
+$ mkdir c14_cargo
+$ cd c14_cargo
 
 $ cargo new adder
-
 
 $ cargo new add_one --lib
      Created library `add_one` package
