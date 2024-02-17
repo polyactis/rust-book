@@ -12,6 +12,14 @@ impl Post {
     }
 
     pub fn content(&self) -> &str {
+        /*
+        We call the *as_ref()* method on the Option because we want a reference to 
+        the value inside the Option rather than ownership of the value. Because 
+        state is an Option<Box<dyn State>> , when we call as_ref() , an 
+        Option<&Box<dyn State>> is returned. If we didn’t call as_ref , we would 
+        get an error because we can’t move state out of the borrowed &self of 
+        the function parameter
+         */
         self.state.as_ref().unwrap().content(self)
     }
     
@@ -20,6 +28,21 @@ impl Post {
     }
 
     pub fn request_review(&mut self) {
+        /*
+        To consume the old state, the request_review method needs to take ownership
+        of the state value. This is where the Option in the state field of Post 
+        comes in: we call the *take()* method to take the Some value out of the state 
+        field and leave a None in its place, because Rust doesn’t let us have 
+        unpopulated fields in structs. This lets us move the state value out of 
+        Post rather than borrowing it. Then we’ll set the post’s state value to 
+        the result of this operation.
+
+        We need to set state to None temporarily rather than setting it directly 
+        with code like self.state = self.state.request_review(); to get ownership 
+        of the state value. This ensures Post can’t use the old state value after 
+        we’ve transformed it into a new state.
+
+         */
         //self.state = Some(self.state.take().expect("Valid state").request_review());
         if let Some(s) = self.state.take() {
             self.state = Some(s.request_review())
