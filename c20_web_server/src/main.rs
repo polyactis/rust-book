@@ -24,19 +24,25 @@ fn handle_connection(mut stream: TcpStream) {
     };
     let contents = fs::read_to_string(filename).unwrap();
     let length = contents.len();
-    let response = format!("{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}");
+    let response = format!(
+        "{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}");
     stream.write_all(response.as_bytes()).unwrap();
+    // flush the buffer
+    stream.flush().unwrap();
     eprintln!(" Done.");
 }
 
 fn main() {
     // [0; 3] is [0,0,0];
     //println!("{:#?}", &[0; 3]);
-    println!("Listening at TCP 127.0.0.1:7878.");
+    let num_threads = 4;
+    let num_requests = 3;
+    println!("Listening at TCP 127.0.0.1:7878 with {num_threads} threads.");
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
-    let pool = ThreadPool::new(4);
+    let pool = ThreadPool::new(num_threads);
+    println!("Will gracefully exit after handling {num_requests} requests.");
 
-    for stream in listener.incoming() {
+    for stream in listener.incoming().take(num_requests) {
         let stream = stream.unwrap();
 
         pool.execute(|| { 
